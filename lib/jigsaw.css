@@ -1,0 +1,149 @@
+
+.jigsaw {    
+    position: relative;	
+}
+
+
+/* img-selector */
+.jigsaw-img-selector {   
+    position: absolute;
+    top: 45%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 300px;
+    padding: 0 2em;
+    line-height: 300px;
+	border: 2px dashed;
+	border-radius: 5px;
+    color: #aaa;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+/* level-selector */
+.jigsaw-level-selector {
+    position: absolute;
+    top: 45%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 300px;
+    color: gray;
+    text-align: center;
+}
+
+.jigsaw-level-selector > ul {
+    width: 30%;
+    margin: 2em auto;
+    padding: 0;
+    list-style: none;
+    font-size: 1.2em;
+}
+
+.jigsaw-level-selector > ul > li {
+    margin: .5em 0;
+    padding: .5em; 
+    color: white;
+    border-radius: .2em;
+    background-image: linear-gradient(hsla(0,0%,100%,.4), hsla(0,0%,100%,0));
+    box-shadow: .05em .08em .2em gray;
+    cursor: pointer;
+}
+
+.jigsaw-level-selector > ul > li:hover {
+    background-image: linear-gradient(hsla(0,0%,100%,.1), hsla(0,0%,0%,.2));
+}
+
+.jigsaw-level-selector > ul > li:first-child { background-color: #28a745; }
+.jigsaw-level-selector > ul > li:nth-child(2) { background-color: #007bff; }
+.jigsaw-level-selector > ul > li:last-child { background-color: #dc3545; }
+
+
+/* game-panel */
+.jigsaw-game-panel {
+    position: absolute;
+    top: 50%;
+    z-index: 20;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: white;
+    border-radius: 5px;
+    background: gray;
+    text-align: center;
+}
+
+.jigsaw-game-panel > li {
+    line-height: 50px;
+}
+
+
+/* game-playground */
+.jigsaw-game-playground {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.jigsaw-game-playground > .pause {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background: white;
+}
+
+.jigsaw-game-playground > .playground {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0;    
+}
+
+.jigsaw-game-playground > .playground > .piece-wrapper {     
+    display: inline-block;
+	cursor: move;
+}
+
+.jigsaw-game-playground > .playground > .piece-wrapper > .piece {    
+    outline: 3px solid #eee;
+	outline-offset: -3px;
+}
+
+.jigsaw-game-playground > .playground > .drag-over > .piece {
+	outline-style: dashed;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    height: 6em;
+    width: 6em;
+    border: 1em solid #eee;
+    border-top-color: limegreen;
+    border-bottom-color: limegreen;
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+}
