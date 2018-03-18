@@ -29,20 +29,20 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 350px;
-    height: 300px;
+    height: 450px;
     color: gray;
     text-align: center;
 }
 
-.jigsaw-level-selector > ul {
+.jigsaw-level-selector > ul:not(.custom-input) {
     width: 30%;
-    margin: 2em auto;
+    margin: 1.5em auto;
     padding: 0;
     list-style: none;
     font-size: 1.2em;
 }
 
-.jigsaw-level-selector > ul > li {
+.jigsaw-level-selector > ul:not(.custom-input) > li {
     margin: .5em 0;
     padding: .5em; 
     color: white;
@@ -52,14 +52,37 @@
     cursor: pointer;
 }
 
-.jigsaw-level-selector > ul > li:hover {
+.jigsaw-level-selector > ul:not(.custom-input) > li:hover {
     background-image: linear-gradient(hsla(0,0%,100%,.1), hsla(0,0%,0%,.2));
 }
 
-.jigsaw-level-selector > ul > li:first-child { background-color: #28a745; }
-.jigsaw-level-selector > ul > li:nth-child(2) { background-color: #007bff; }
-.jigsaw-level-selector > ul > li:last-child { background-color: #dc3545; }
+.jigsaw-level-selector > ul:not(.custom-input) > li:first-child { background-color: #28a745; }
+.jigsaw-level-selector > ul:not(.custom-input) > li:nth-child(2) { background-color: #007bff; }
+.jigsaw-level-selector > ul:not(.custom-input) > li:nth-child(3) { background-color: #dc3545; }
+.jigsaw-level-selector > ul:not(.custom-input) > li:nth-child(4) { background-color: orange; }
 
+.jigsaw-level-selector .custom-input {
+    display: none;
+    margin: 0;
+    padding: .5em;
+    list-style: none;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+.jigsaw-level-selector .custom-input > li {
+    margin: .5em 0;
+    padding: 0 .5em;
+}
+.jigsaw-level-selector .custom-input > li > span {
+    display: inline-block;
+    width: 4em;
+    padding-right: 1em;
+    text-align: right;
+}
+.jigsaw-level-selector .custom-input > li> button {
+    border-radius: 5px;
+    padding: .2em .5em;
+}
 
 /* game-panel */
 .jigsaw-game-panel {
