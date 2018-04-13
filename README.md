@@ -1,7 +1,8 @@
 # jigsaw
-> 基于 web 的拼图游戏。来源 [2018葡萄城招聘编程邀请赛-题目-6](http://www.grapecity.com.cn/career/chanllenge)   
- 
-题目6：基于 Web 浏览器的拼图游戏
+> 基于 web 的拼图游戏。来源 [2018葡萄城招聘编程邀请赛-题目-6](http://www.grapecity.com.cn/career/chanllenge)    
+
+题目6：基于 Web 浏览器的拼图游戏 
+
 编程语言：推荐 HTML + JavaScript
 
 题目描述： 实现一个在浏览器中运行的拼图游戏
