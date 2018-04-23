@@ -21,6 +21,14 @@
     cursor: pointer;
 }
 
+/* fix cover some edge on small device */ 
+@media (max-width: 768px) {   
+    .jigsaw-img-selector { 
+        box-sizing: border-box;
+        width: 100%;
+    }
+}
+
 
 /* level-selector */
 .jigsaw-level-selector {
