@@ -1,5 +1,5 @@
 # jigsaw
-> 基于 web 的拼图游戏。来源 [2018葡萄城招聘编程邀请赛-题目-6](https://www.grapecity.com.cn/career/chanllenge)    
+> 基于 web 的拼图游戏。来源 [2018葡萄城招聘编程邀请赛-题目-6](https://www.grapecity.com.cn/career/challenge)    
 
 题目6：基于 Web 浏览器的拼图游戏 
 
