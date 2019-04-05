@@ -1,13 +1,18 @@
+import resolve from 'rollup-plugin-node-resolve';
+import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 
-export default [
-	// browser-friendly UMD build
-	{
-		input: 'src/main.js',
-		output: {
-			name: 'jigsaw',
-			file: pkg.browser,
-			format: 'umd'
-		}
-	}
-];
+export default {  
+	input: 'src/main.js',
+	output: {
+		name: 'jigsaw',
+		file: pkg.browser,
+		format: 'umd', // browser-friendly UMD build
+	},
+	plugins: [
+		resolve(),
+		babel({
+			exclude: 'node_modules/**' // only transpile our source code
+		})
+	]
+}
