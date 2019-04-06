@@ -50,33 +50,26 @@ class ImgSelector {
     }
 
     open() {
-        var self = this;
-
         // create new input
         var input = createElement('input');
         input.setAttribute('type', 'file');
         input.setAttribute('accept', 'image/*');
         input.style.display = 'none';
-
-        // events
-        var handleChange = function (e) {
+        input.addEventListener('change', e => {
             e.stopPropagation();
             e.preventDefault();
 
-            var catchImg = self.catchImg;
+            var catchImg = this.catchImg;
             var files = e.target.files;
             getFile(files, catchImg);
-        }
-        var handleClick = function (e) {
-            e.stopPropagation();
-        };
-        input.addEventListener('change', handleChange, false);
-        input.addEventListener('click', handleClick, false); // avoid dead loop with parent click
+        }, false);
+        // avoid dead loop with parent click
+        input.addEventListener('click', e => e.stopPropagation(), false); 
 
         // replace old input or add new input,
         // do this to avoid input change not trigger 
         // when user choose same file
-        var el = self.root;
+        var el = this.root;
         var oldInput = el.querySelector('input');
         if (oldInput) el.replaceChild(input, oldInput);
         else el.appendChild(input);
