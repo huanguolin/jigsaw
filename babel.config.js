@@ -15,7 +15,7 @@ module.exports = {
             {
                 "absoluteRuntime": false,
                 "corejs": false,
-                "helpers": true,
+                "helpers": false,
                 "regenerator": true,
                 "useESModules": false
             }
