@@ -7,62 +7,35 @@ class ImgSelector {
         this.catchImg = null;
     }
 
+    get isInit() {
+        return this.root && this.root instanceof Element;
+    }
+
     get show() {
+        this._detectInit();
         return this.root.style.display !== 'none';
     }
+
     set show(val) {
+        this._detectInit();
         this.root.style.display = val ? 'block' : 'none';
     }
 
     init(parent, catchImg) {
-        var self = this;
-
-        var div = createElement('div');
-        var span = createElement('span');
-
-        span.innerHTML = 'Drag Picture Here or Click to Select';
-        div.classList.add('jigsaw-img-selector');
-        div.style.display = 'none';
-
-        // events
-        var handleDragOver = function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
-        };
-        var handleDrop = function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            var catchImg = self.catchImg;
-            var files = e.dataTransfer.files;
-            self._getImgFile(files, catchImg);
-        };
-        var handleClick = function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            var input = e.currentTarget.querySelector('input');
-            input.click();
-        };
-        div.addEventListener('dragover', handleDragOver, false);
-        div.addEventListener('drop', handleDrop, false);
-        div.addEventListener('click', handleClick, false);
-
-        div.appendChild(span);
-        parent.appendChild(div);
-
-        self.catchImg = catchImg;
-        self.root = div;
+        this.catchImg = catchImg;
+        this.root = this._createAndSetRootDiv();
+        this.root.appendChild(this._createAndSetSpan());
+        parent.appendChild(this.root);
     }
 
     open() {
-        const input = this._createAndSetInputElem(); 
-
+        this._detectInit();
+        
         // replace old input or add new input,
         // do this to avoid input change not trigger 
         // when user choose same file
-        const oldInput = this.root.querySelector('input');
+        const oldInput = this.root.querySelector('input');        
+        const input = this._createAndSetInputElem(); 
         if (oldInput) {
             this.root.replaceChild(input, oldInput);
         } else {
@@ -73,7 +46,46 @@ class ImgSelector {
     }
 
     close() {
+        this._detectInit();
         this.show = false;
+    }
+    
+    _detectInit() {
+        if (!this.isInit) {
+            throw new Error('Need init first!');
+        }
+    }
+
+    _createAndSetSpan() {
+        const span = createElement('span');
+        span.innerHTML = 'Drag Picture Here or Click to Select';
+        return span;
+    }
+
+    _createAndSetRootDiv() {
+        const div = createElement('div');
+        div.classList.add('jigsaw-img-selector');
+        div.style.display = 'none';
+        // events
+        div.addEventListener('dragover', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        }, false);
+        div.addEventListener('drop', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            var catchImg = this.catchImg;
+            var files = e.dataTransfer.files;
+            this._notifyGotImgFile(files, catchImg);
+        }, false);
+        div.addEventListener('click', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            var input = e.currentTarget.querySelector('input');
+            input.click();
+        }, false);
+        return div;
     }
 
     _createAndSetInputElem() {
@@ -84,14 +96,14 @@ class ImgSelector {
         input.addEventListener('change', e => {
             e.stopPropagation();
             e.preventDefault();
-            this._getImgFile(e.target.files);
+            this._notifyGotImgFile(e.target.files);
         }, false);
         // avoid dead loop with parent click
         input.addEventListener('click', e => e.stopPropagation(), false);
         return input;
     }
 
-    _getImgFile(files) {
+    _notifyGotImgFile(files) {
         if (files.length > 0 && this.catchImg) {
             this.catchImg(window.URL.createObjectURL(files[0]));
         }
