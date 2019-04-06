@@ -1,11 +1,13 @@
 import { createElement } from './util';
 
-export default {
-    root: null,
-    catchImg: null,
+class ImgSelector {
 
-    // operations 
-    init: function (parent, catchImg) {
+    constructor() {
+        this.root = null;
+        this.catchImg = null;
+    }
+
+    init(parent, catchImg) {
         var self = this;
 
         var div = createElement('div');
@@ -45,8 +47,9 @@ export default {
 
         self.catchImg = catchImg;
         self.root = div;
-    },
-    open: function () {
+    }
+
+    open() {
         var self = this;
 
         // create new input
@@ -80,12 +83,15 @@ export default {
 
         // show imgSelector
         el.style.display = 'block';
-    },
-    close: function () {
+    }
+
+    close() {
         // hide imgSelector
         this.root.style.display = 'none';
-    },
-};
+    }
+}
+
+export default new ImgSelector();
 
 function getFile(files, catchImg) {
     if (files.length > 0 && catchImg) {
