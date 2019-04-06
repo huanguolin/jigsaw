@@ -5,8 +5,7 @@ module.exports = {
             {
                 targets: {
                     "ie": "11",
-                    "chrome": "70",
-                },
+                },               
             }
         ]
     ],
