@@ -1,7 +1,6 @@
 import imgSelector from '../src/imgSelector';
 import * as testUtil from '../testUtil';
 
-
 beforeEach(() => {
     document.body.innerHTML = `<div id="test"></div>`;
 });
@@ -163,4 +162,22 @@ test('imgSelector get file via drag-drop', () => {
     // result 
     expect(testCb).toHaveBeenCalledTimes(1);
     expect(testCb).toHaveReturnedWith(mockFile);
+});
+
+test('imgSelector drag-over should set drop-effect to "copy"', () => {
+    imgSelector.init(document.getElementById('test'));
+    imgSelector.open();
+
+    // mock callback
+    const testCb = jest.fn(e => e.dataTransfer.dropEffect);
+    imgSelector.root.addEventListener('dragover', testCb);
+
+    // mock drag over event 
+    const event = new Event('dragover');
+    event.dataTransfer = { dropEffect: 'none' };
+    imgSelector.root.dispatchEvent(event);
+
+    // result 
+    expect(testCb).toHaveBeenCalledTimes(1);
+    expect(testCb).toHaveReturnedWith('copy');
 });
