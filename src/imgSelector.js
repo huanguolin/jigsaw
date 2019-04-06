@@ -29,7 +29,7 @@ class ImgSelector {
 
             var catchImg = self.catchImg;
             var files = e.dataTransfer.files;
-            getFile(files, catchImg);
+            self._getFile(files, catchImg);
         };
         var handleClick = function (e) {
             e.stopPropagation();
@@ -75,7 +75,7 @@ class ImgSelector {
             e.preventDefault();
             var catchImg = this.catchImg;
             var files = e.target.files;
-            getFile(files, catchImg);
+            this._getFile(files, catchImg);
         }, false);
         // avoid dead loop with parent click
         input.addEventListener('click', e => e.stopPropagation(), false);
@@ -86,13 +86,15 @@ class ImgSelector {
         // hide imgSelector
         this.root.style.display = 'none';
     }
+
+    _getFile(files, catchImg) {
+        if (files.length > 0 && catchImg) {
+            var url = window.URL.createObjectURL(files[0]);
+            catchImg(url);
+        }
+    }
 }
 
 export default new ImgSelector();
 
-function getFile(files, catchImg) {
-    if (files.length > 0 && catchImg) {
-        var url = window.URL.createObjectURL(files[0]);
-        catchImg(url);
-    }
-}
+
