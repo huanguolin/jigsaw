@@ -51,20 +51,7 @@ class ImgSelector {
 
     open() {
         // create new input
-        var input = createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.style.display = 'none';
-        input.addEventListener('change', e => {
-            e.stopPropagation();
-            e.preventDefault();
-
-            var catchImg = this.catchImg;
-            var files = e.target.files;
-            getFile(files, catchImg);
-        }, false);
-        // avoid dead loop with parent click
-        input.addEventListener('click', e => e.stopPropagation(), false); 
+        var input = this._createAndSetInputElem(); 
 
         // replace old input or add new input,
         // do this to avoid input change not trigger 
@@ -76,6 +63,23 @@ class ImgSelector {
 
         // show imgSelector
         el.style.display = 'block';
+    }
+
+    _createAndSetInputElem() {
+        var input = createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.style.display = 'none';
+        input.addEventListener('change', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            var catchImg = this.catchImg;
+            var files = e.target.files;
+            getFile(files, catchImg);
+        }, false);
+        // avoid dead loop with parent click
+        input.addEventListener('click', e => e.stopPropagation(), false);
+        return input;
     }
 
     close() {
