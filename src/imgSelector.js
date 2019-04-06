@@ -7,6 +7,13 @@ class ImgSelector {
         this.catchImg = null;
     }
 
+    get show() {
+        return this.root.style.display !== 'none';
+    }
+    set show(val) {
+        this.root.style.display = val ? 'block' : 'none';
+    }
+
     init(parent, catchImg) {
         var self = this;
 
@@ -29,7 +36,7 @@ class ImgSelector {
 
             var catchImg = self.catchImg;
             var files = e.dataTransfer.files;
-            self._getFile(files, catchImg);
+            self._getImgFile(files, catchImg);
         };
         var handleClick = function (e) {
             e.stopPropagation();
@@ -50,51 +57,45 @@ class ImgSelector {
     }
 
     open() {
-        // create new input
-        var input = this._createAndSetInputElem(); 
+        const input = this._createAndSetInputElem(); 
 
         // replace old input or add new input,
         // do this to avoid input change not trigger 
         // when user choose same file
-        var el = this.root;
-        var oldInput = el.querySelector('input');
-        if (oldInput) el.replaceChild(input, oldInput);
-        else el.appendChild(input);
+        const oldInput = this.root.querySelector('input');
+        if (oldInput) {
+            this.root.replaceChild(input, oldInput);
+        } else {
+            this.root.appendChild(input);
+        }
 
-        // show imgSelector
-        el.style.display = 'block';
+        this.show = true;
+    }
+
+    close() {
+        this.show = false;
     }
 
     _createAndSetInputElem() {
-        var input = createElement('input');
+        const input = createElement('input');
         input.setAttribute('type', 'file');
         input.setAttribute('accept', 'image/*');
         input.style.display = 'none';
         input.addEventListener('change', e => {
             e.stopPropagation();
             e.preventDefault();
-            var catchImg = this.catchImg;
-            var files = e.target.files;
-            this._getFile(files, catchImg);
+            this._getImgFile(e.target.files);
         }, false);
         // avoid dead loop with parent click
         input.addEventListener('click', e => e.stopPropagation(), false);
         return input;
     }
 
-    close() {
-        // hide imgSelector
-        this.root.style.display = 'none';
-    }
-
-    _getFile(files, catchImg) {
-        if (files.length > 0 && catchImg) {
-            var url = window.URL.createObjectURL(files[0]);
-            catchImg(url);
+    _getImgFile(files) {
+        if (files.length > 0 && this.catchImg) {
+            this.catchImg(window.URL.createObjectURL(files[0]));
         }
     }
 }
 
 export default new ImgSelector();
-
-
