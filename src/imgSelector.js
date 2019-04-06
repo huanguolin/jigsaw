@@ -27,10 +27,7 @@ export default {
 
             var catchImg = self.catchImg;
             var files = e.dataTransfer.files;
-            if (files.length > 0 && catchImg) {
-                var url = window.URL.createObjectURL(files[0]);
-                catchImg(url);
-            }
+            getFile(files, catchImg);
         };
         var handleClick = function (e) {
             e.stopPropagation();
@@ -65,10 +62,7 @@ export default {
 
             var catchImg = self.catchImg;
             var files = e.target.files;
-            if (files.length > 0 && catchImg) {
-                var url = window.URL.createObjectURL(files[0]);
-                catchImg(url);
-            }
+            getFile(files, catchImg);
         }
         var handleClick = function (e) {
             e.stopPropagation();
@@ -92,3 +86,10 @@ export default {
         this.root.style.display = 'none';
     },
 };
+
+function getFile(files, catchImg) {
+    if (files.length > 0 && catchImg) {
+        var url = window.URL.createObjectURL(files[0]);
+        catchImg(url);
+    }
+}
