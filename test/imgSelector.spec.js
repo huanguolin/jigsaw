@@ -1,51 +1,71 @@
 import imgSelector from '../src/imgSelector';
 import * as testUtil from '../testUtil';
 
-beforeEach(() => {
-    document.body.innerHTML = `<div id="test"></div>`;
-});
+describe('imgSelector', () => {
+    beforeEach(() => (document.body.innerHTML = `<div id="test"></div>`));
 
-test('imgSelector display status', () => {
-    imgSelector.init(document.getElementById('test'));
-    expect(imgSelector.root.style.display).toBe('none');
-    imgSelector.open();
-    expect(imgSelector.root.style.display).toBe('block');
-    imgSelector.close();
-    expect(imgSelector.root.style.display).toBe('none');
-});
+    describe('display status', () => {
+        beforeEach(() => {
+            imgSelector.init(document.getElementById('test'));
+        });
 
-test('imgSelector DOM structure', () => {
-    imgSelector.init(document.getElementById('test'));
-    expect(imgSelector.root).toMatchInlineSnapshot(`
-        <div
-          class="jigsaw-img-selector"
-          style="display: none;"
-        >
-          <span>
-            Drag Picture Here or Click to Select
-          </span>
-        </div>
-    `);
+        test('not display when init', () => {
+            expect(imgSelector.root.style.display).toBe('none');
+        });
 
-    imgSelector.open();
-    expect(imgSelector.root).toMatchInlineSnapshot(`
-                        <div
-                          class="jigsaw-img-selector"
-                          style="display: block;"
-                        >
-                          <span>
-                            Drag Picture Here or Click to Select
-                          </span>
-                          <input
-                            accept="image/*"
-                            style="display: none;"
-                            type="file"
-                          />
-                        </div>
+        test('show when open', () => {
+            imgSelector.open();
+            expect(imgSelector.root.style.display).toBe('block');
+        });
+
+        test('hide when close', () => {
+            imgSelector.open();
+            imgSelector.close();
+            expect(imgSelector.root.style.display).toBe('none');
+        });
+    });
+
+    describe('DOM structure', () => {
+        beforeEach(() => {
+            imgSelector.init(document.getElementById('test'));
+        });
+
+        test('init', () => {
+            expect(imgSelector.root).toMatchInlineSnapshot(`
+                                <div
+                                  class="jigsaw-img-selector"
+                                  style="display: none;"
+                                >
+                                  <span>
+                                    Drag Picture Here or Click to Select
+                                  </span>
+                                </div>
+                        `);
+        });
+
+        test('open', () => {
+            imgSelector.open();
+            expect(imgSelector.root).toMatchInlineSnapshot(`
+                <div
+                  class="jigsaw-img-selector"
+                  style="display: block;"
+                >
+                  <span>
+                    Drag Picture Here or Click to Select
+                  </span>
+                  <input
+                    accept="image/*"
+                    style="display: none;"
+                    type="file"
+                  />
+                </div>
             `);
+        });
 
-    imgSelector.close();
-    expect(imgSelector.root).toMatchInlineSnapshot(`
+        test('close', () => {
+            imgSelector.open();
+            imgSelector.close();
+            expect(imgSelector.root).toMatchInlineSnapshot(`
                 <div
                   class="jigsaw-img-selector"
                   style="display: none;"
@@ -59,125 +79,122 @@ test('imgSelector DOM structure', () => {
                     type="file"
                   />
                 </div>
-        `);
-});
+            `);
+        });
+    });
 
-test('imgSelector click span should trigger input click', () => {
-    imgSelector.init(document.getElementById('test'));
-    imgSelector.open();
+    describe('effect', () => {
+        beforeEach(() => {
+            imgSelector.init(document.getElementById('test'));
+            imgSelector.open();
+        });
+
+        test('click span should trigger input click', () => {    
+            // add test to detect point
+            const testCb = jest.fn();
+            const elInput = document.querySelector('input[type="file"]');
+            elInput.addEventListener('click', testCb);
     
-    // add test to detect point 
-    const testCb = jest.fn();
-    const elInput = document.querySelector('input[type="file"]');
-    elInput.addEventListener('click', testCb);
-
-    // mock span click
-    imgSelector.root.querySelector('span')
-        .dispatchEvent(new Event('click', {
-            'bubbles': true,
-            'cancelable': false,
-        }));
-
-    // expect result 
-    expect(testCb).toHaveBeenCalledTimes(1);
-});
-
-test('imgSelector input click event must stop propagation to avoid dead loop', () => {
-    imgSelector.init(document.getElementById('test'));
-    imgSelector.open();
-
-    // mock Event.prototype.stopPropagation and add detect flag
-    const overriddenStop = Event.prototype.stopPropagation;
-    Event.prototype.stopPropagation = function(){
-        this.isPropagationStopped = true;
-        overriddenStop.apply(this, arguments);
-    }
+            // mock span click
+            imgSelector.root.querySelector('span').dispatchEvent(
+                new Event('click', {
+                    bubbles: true,
+                    cancelable: false,
+                })
+            );
     
-    // mock callback
-    const testCb = jest.fn(e => e.isPropagationStopped);
-    const elInput = document.querySelector('input[type="file"]');
-    elInput.addEventListener('click', testCb);
-
-    // mock span click
-    imgSelector.root.querySelector('span')
-        .dispatchEvent(new Event('click', {
-            'bubbles': true,
-            'cancelable': false,
-        }));
-
-    // expect result 
-    expect(testCb).toHaveReturnedWith(true);
+            // expect result
+            expect(testCb).toHaveBeenCalledTimes(1);
+        });
     
-    // restore Event.prototype.stopPropagation
-    Event.prototype.stopPropagation = overriddenStop;
-});
-
-test('imgSelector get file via click input', () => {
-    const mockFile = 'mock-file';
-
-    // mock callback    
-    const testCb = jest.fn(f => f);
-    imgSelector.init(document.getElementById('test'), testCb);
-    imgSelector.open();
-
-    // mock file select
-    const elInput = document.querySelector('input[type="file"]');
-    testUtil.setFilesToInput(elInput, [mockFile]);
+        test('input click event must stop propagation to avoid dead loop', () => {    
+            // mock Event.prototype.stopPropagation and add detect flag
+            const overriddenStop = Event.prototype.stopPropagation;
+            Event.prototype.stopPropagation = function() {
+                this.isPropagationStopped = true;
+                overriddenStop.apply(this, arguments);
+            };
     
-    // mock window.URL.createObjectURL method
-    const backup = window.URL.createObjectURL;
-    window.URL.createObjectURL = e => e;
-
-    // trigger input change event
-    elInput.dispatchEvent(new Event('change'));
-
-    // restore window.URL.createObjectURL method
-    window.URL.createObjectURL = backup;
-
-    // result 
-    expect(testCb).toHaveBeenCalledTimes(1);
-    expect(testCb).toHaveReturnedWith(mockFile);
-});
-
-test('imgSelector get file via drag-drop', () => {
-    const mockFile = 'mock-file';
-
-    // mock callback
-    const testCb = jest.fn(f => f);
-    imgSelector.init(document.getElementById('test'), testCb);
-    imgSelector.open();
+            // mock callback
+            const testCb = jest.fn(e => e.isPropagationStopped);
+            const elInput = document.querySelector('input[type="file"]');
+            elInput.addEventListener('click', testCb);
     
-    // mock window.URL.createObjectURL method
-    const backup = window.URL.createObjectURL;
-    window.URL.createObjectURL = e => e;
+            // mock span click
+            imgSelector.root.querySelector('span').dispatchEvent(
+                new Event('click', {
+                    bubbles: true,
+                    cancelable: false,
+                })
+            );
+    
+            // expect result
+            expect(testCb).toHaveReturnedWith(true);
+    
+            // restore Event.prototype.stopPropagation
+            Event.prototype.stopPropagation = overriddenStop;
+        });
+    
+        test('drag-over should set drop-effect to "copy"', () => {    
+            // mock callback
+            const testCb = jest.fn(e => e.dataTransfer.dropEffect);
+            imgSelector.root.addEventListener('dragover', testCb);
+    
+            // mock drag over event
+            const event = new Event('dragover');
+            event.dataTransfer = { dropEffect: 'none' };
+            imgSelector.root.dispatchEvent(event);
+    
+            // result
+            expect(testCb).toHaveBeenCalledTimes(1);
+            expect(testCb).toHaveReturnedWith('copy');
+        });
+    });
 
-    // trigger drag drop event 
-    const event = new Event('drop');
-    event.dataTransfer = { files: [mockFile] };
-    imgSelector.root.dispatchEvent(event);
+    describe('get file', () => {
+        const mockFile = 'mock-file';
+        let backup;
+        beforeAll(() => {
+            // mock window.URL.createObjectURL method
+            backup = window.URL.createObjectURL;
+            window.URL.createObjectURL = e => e;
+        });
 
-    // restore window.URL.createObjectURL method
-    window.URL.createObjectURL = backup;
+        afterAll(() => {
+            // restore window.URL.createObjectURL method
+            window.URL.createObjectURL = backup;
+        });
 
-    // result 
-    expect(testCb).toHaveBeenCalledTimes(1);
-    expect(testCb).toHaveReturnedWith(mockFile);
-});
+        let testCb;
+        beforeEach(() => {
+            // mock callback
+            testCb = jest.fn(f => f);
+            imgSelector.init(document.getElementById('test'), testCb);
+            imgSelector.open();
+        });
 
-test('imgSelector drag-over should set drop-effect to "copy"', () => {
-    imgSelector.init(document.getElementById('test'));
-    imgSelector.open();
+        test('via click input', () => {
+            // mock file select
+            const elInput = document.querySelector('input[type="file"]');
+            testUtil.setFilesToInput(elInput, [mockFile]);
 
-    // mock callback
-    const testCb = jest.fn(e => e.dataTransfer.dropEffect);
-    imgSelector.root.addEventListener('dragover', testCb);
+            // trigger input change event
+            elInput.dispatchEvent(new Event('change'));
 
-    // mock drag over event 
-    const event = new Event('dragover');
-    event.dataTransfer = { dropEffect: 'none' };
-    imgSelector.root.dispatchEvent(event);
+            // result
+            expect(testCb).toHaveBeenCalledTimes(1);
+            expect(testCb).toHaveReturnedWith(mockFile);
+        });
 
-    // result 
-    expect(testCb).toHaveBeenCalledTimes(1);
-    expect(testCb).toHaveReturnedWith('copy');
+        test('via drag-drop', () => {
+            // trigger drag drop event
+            const event = new Event('drop');
+            event.dataTransfer = { files: [mockFile] };
+            imgSelector.root.dispatchEvent(event);
+
+            // result
+            expect(testCb).toHaveBeenCalledTimes(1);
+            expect(testCb).toHaveReturnedWith(mockFile);
+        });
+    });
 });
