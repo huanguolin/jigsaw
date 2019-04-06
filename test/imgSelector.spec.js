@@ -1,12 +1,14 @@
-import imgSelector from '../src/imgSelector';
+import ImgSelector from '../src/ImgSelector';
 import * as testUtil from '../testUtil';
 
 describe('imgSelector', () => {
-    beforeEach(() => (document.body.innerHTML = `<div id="test"></div>`));
+
+    beforeEach(() => document.body.innerHTML = `<div id="test"></div>`);
 
     describe('display status', () => {
+        let imgSelector;
         beforeEach(() => {
-            imgSelector.init(document.getElementById('test'));
+            imgSelector = new ImgSelector(document.getElementById('test'));
         });
 
         test('not display when init', () => {
@@ -26,8 +28,9 @@ describe('imgSelector', () => {
     });
 
     describe('DOM structure', () => {
+        let imgSelector;
         beforeEach(() => {
-            imgSelector.init(document.getElementById('test'));
+            imgSelector = new ImgSelector(document.getElementById('test'));
         });
 
         test('init', () => {
@@ -84,8 +87,9 @@ describe('imgSelector', () => {
     });
 
     describe('effect', () => {
+        let imgSelector;
         beforeEach(() => {
-            imgSelector.init(document.getElementById('test'));
+            imgSelector = new ImgSelector(document.getElementById('test'));
             imgSelector.open();
         });
 
@@ -166,10 +170,11 @@ describe('imgSelector', () => {
         });
 
         let testCb;
+        let imgSelector;            
         beforeEach(() => {
             // mock callback
             testCb = jest.fn(f => f);
-            imgSelector.init(document.getElementById('test'), testCb);
+            imgSelector = new ImgSelector(document.getElementById('test'), testCb);
             imgSelector.open();
         });
 

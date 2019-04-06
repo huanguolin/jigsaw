@@ -1,35 +1,23 @@
 import { createElement } from './util';
 
-class ImgSelector {
+export default class ImgSelector {
 
-    constructor() {
-        this.root = null;
-        this.catchImg = null;
-    }
-
-    get isInit() {
-        return this.root && this.root instanceof Element;
-    }
-
-    get show() {
-        this._detectInit();
-        return this.root.style.display !== 'none';
-    }
-
-    set show(val) {
-        this._detectInit();
-        this.root.style.display = val ? 'block' : 'none';
-    }
-
-    init(parent, catchImg) {
+    constructor(parent, catchImg) {
         this.catchImg = catchImg;
         this.root = this._createAndSetRootDiv();
         this.root.appendChild(this._createAndSetSpan());
         parent.appendChild(this.root);
     }
 
+    get show() {
+        return this.root.style.display !== 'none';
+    }
+
+    set show(val) {
+        this.root.style.display = val ? 'block' : 'none';
+    }
+
     open() {
-        this._detectInit();
         
         // replace old input or add new input,
         // do this to avoid input change not trigger 
@@ -46,14 +34,7 @@ class ImgSelector {
     }
 
     close() {
-        this._detectInit();
         this.show = false;
-    }
-    
-    _detectInit() {
-        if (!this.isInit) {
-            throw new Error('Need init first!');
-        }
     }
 
     _createAndSetSpan() {
@@ -109,5 +90,3 @@ class ImgSelector {
         }
     }
 }
-
-export default new ImgSelector();

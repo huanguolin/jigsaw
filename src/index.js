@@ -5,7 +5,8 @@
  * Released under the MIT License.
  */
 
-import imgSelector from './imgSelector';
+import ImgSelector from './ImgSelector';
+
 import levelSelector from './levelSelector';
 import gamePanel from './gamePanel';
 import gamePlayground from './gamePlayground';
@@ -38,7 +39,7 @@ export default function jigsaw(el, width, height) {
         h: height
     };
 
-    imgSelector.init(el, function (imgSrc) {
+    const imgSelector = new ImgSelector(el, function (imgSrc) {
         imgSelector.close();
         levelSelector.open();
         imgUrl = imgSrc;
