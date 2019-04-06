@@ -94,7 +94,7 @@ test('imgSelector input click event must stop propagation to avoid dead loop', (
         overriddenStop.apply(this, arguments);
     }
     
-    // add test to detect point 
+    // mock callback
     const testCb = jest.fn(e => e.isPropagationStopped);
     const elInput = document.querySelector('input[type="file"]');
     elInput.addEventListener('click', testCb);
@@ -116,10 +116,9 @@ test('imgSelector input click event must stop propagation to avoid dead loop', (
 test('imgSelector get file via click input', () => {
     const mockFile = 'mock-file';
 
-    imgSelector.init(document.getElementById('test'), function (file) {
-        // test result 
-        expect(file).toBe(mockFile);
-    });
+    // mock callback    
+    const testCb = jest.fn(f => f);
+    imgSelector.init(document.getElementById('test'), testCb);
     imgSelector.open();
 
     // mock file select
@@ -131,16 +130,37 @@ test('imgSelector get file via click input', () => {
     window.URL.createObjectURL = e => e;
 
     // trigger input change event
-    elInput.dispatchEvent(new Event('change', {
-        'bubbles': true,
-        'cancelable': false,
-    }));
+    elInput.dispatchEvent(new Event('change'));
 
     // restore window.URL.createObjectURL method
     window.URL.createObjectURL = backup;
+
+    // result 
+    expect(testCb).toHaveBeenCalledTimes(1);
+    expect(testCb).toHaveReturnedWith(mockFile);
 });
 
 test('imgSelector get file via drag-drop', () => {
-    imgSelector.init(document.getElementById('test'));
-    // TODO
+    const mockFile = 'mock-file';
+
+    // mock callback
+    const testCb = jest.fn(f => f);
+    imgSelector.init(document.getElementById('test'), testCb);
+    imgSelector.open();
+    
+    // mock window.URL.createObjectURL method
+    const backup = window.URL.createObjectURL;
+    window.URL.createObjectURL = e => e;
+
+    // trigger drag drop event 
+    const event = new Event('drop');
+    event.dataTransfer = { files: [mockFile] };
+    imgSelector.root.dispatchEvent(event);
+
+    // restore window.URL.createObjectURL method
+    window.URL.createObjectURL = backup;
+
+    // result 
+    expect(testCb).toHaveBeenCalledTimes(1);
+    expect(testCb).toHaveReturnedWith(mockFile);
 });
