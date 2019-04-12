@@ -51,7 +51,6 @@ export default class LevelSelector {
     }
 
     _genCustomInput() {
-        const self = this;
         const root = createElement('ul');
         root.classList.add('custom-input');
         const genInputItem = function (name) {
@@ -75,15 +74,15 @@ export default class LevelSelector {
         const confirm = createElement('li');
         const button = createElement('button');
         button.innerHTML = 'OK';
-        button.addEventListener('click', function (e) {
+        button.addEventListener('click', e => {
             e.stopPropagation();
-            if (!self.gameReady)
+            if (!this.gameReady)
                 return;
             const level = {
                 row: row.input.value,
                 col: col.input.value,
             };
-            self.gameReady(level);
+            this.gameReady(level);
         }, false);
         confirm.appendChild(button);
         root.appendChild(row.li);
