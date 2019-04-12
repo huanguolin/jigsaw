@@ -44,8 +44,7 @@ export default function jigsaw(el, width, height) {
         levelSelector.open();
         imgUrl = imgSrc;
     });
-    const levelSelector = new LevelSelector();
-    levelSelector.init(el, levels, levelMap, function (level) {
+    const levelSelector = new LevelSelector(el, levels, levelMap, function (level) {
         levelSelector.close();
         gamePlayground.serve(imgUrl, level);
     });

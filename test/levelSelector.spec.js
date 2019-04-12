@@ -1,8 +1,8 @@
 import LevelSelector from '../src/levelSelector';
 
 describe('levelSelector', () => {
-    var levels = ['simple', 'hard', 'custom'];
-    var levelMap = {
+    const levels = ['simple', 'hard', 'custom'];
+    const levelMap = {
         simple: {
             row: 2,
             col: 2,
