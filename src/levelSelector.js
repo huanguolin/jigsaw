@@ -3,19 +3,18 @@ import { createElement } from './util';
 export default class LevelSelector {
 
     constructor(parent, levels, levelMap, gameReady) {
-        var self = this;
         var div = createElement('div');
         var h3 = createElement('h2');
         var ul = createElement('ul');
-        var customInput = self._genCustomInput();
+        var customInput = this._genCustomInput();
         h3.innerHTML = 'Select the Level of Difficulty';
-        levels.forEach(function (item) {
+        levels.forEach(item => {
             var li = createElement('li');
             li.innerHTML = item;
-            li.addEventListener('click', function (e) {
+            li.addEventListener('click', e => {
                 e.stopPropagation();
                 if (item === 'custom') {
-                    self.customInput.style.display = 'block';
+                    this.customInput.style.display = 'block';
                     return;
                 }
                 if (gameReady)
@@ -29,9 +28,9 @@ export default class LevelSelector {
         div.appendChild(ul);
         div.appendChild(customInput);
         parent.appendChild(div);
-        self.customInput = customInput;
-        self.gameReady = gameReady;
-        self.root = div;
+        this.customInput = customInput;
+        this.gameReady = gameReady;
+        this.root = div;
     }
 
     get show() {
