@@ -1,11 +1,17 @@
 import { createElement } from './util';
 
-export default {
-    root: null,
-    customInput: null,
-    gameReady: null,
-    // operations 
-    init: function (parent, levels, levelMap, gameReady) {
+class LevelSelector {
+
+
+    get show() {
+        return this.root.style.display !== 'none';
+    }
+
+    set show(val) {
+        this.root.style.display = val ? 'block' : 'none';
+    }
+
+    init(parent, levels, levelMap, gameReady) {
         var self = this;
         var div = createElement('div');
         var h3 = createElement('h2');
@@ -35,16 +41,18 @@ export default {
         self.customInput = customInput;
         self.gameReady = gameReady;
         self.root = div;
-    },
-    open: function () {
-        this.root.style.display = 'block';
+    }
+
+    open() {
+        this.show = true;
         this.customInput.style.display = 'none';
-    },
-    close: function () {
-        this.root.style.display = 'none';
-    },
-    // inner functions 
-    _genCustomInput: function () {
+    }
+
+    close() {
+        this.show = false;
+    }
+
+    _genCustomInput() {
         var self = this;
         var root = createElement('ul');
         root.classList.add('custom-input');
@@ -85,4 +93,6 @@ export default {
         root.appendChild(confirm);
         return root;
     }
-};
+}
+
+export default new LevelSelector();
