@@ -7,7 +7,7 @@ export default class LevelSelector {
         
         const root = this._createRootAndSetElem();
         root.appendChild(this._createTitle());
-        root.appendChild(this._createPresetLevelList(levels, gameReady, levelMap));
+        root.appendChild(this._createPresetLevelList(levels, levelMap));
         
 
         const customInput = this._genCustomInput();
@@ -18,7 +18,7 @@ export default class LevelSelector {
         this.root = root;
     }
 
-    _createPresetLevelList(levels, gameReady, levelMap) {
+    _createPresetLevelList(levels, levelMap) {
         const ul = createElement('ul');
         levels.forEach(item => {
             const li = createElement('li');
@@ -29,8 +29,9 @@ export default class LevelSelector {
                     this.customInput.style.display = 'block';
                     return;
                 }
-                if (gameReady)
-                    gameReady(levelMap[item]);
+                if (this.gameReady) {
+                    this.gameReady(levelMap[item]);
+                }
             }, false);
             ul.appendChild(li);
         });
