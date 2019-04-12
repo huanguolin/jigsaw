@@ -6,10 +6,7 @@ export default class LevelSelector {
         this.gameReady = gameReady;        
         
         const root = this._createRootAndSetElem();
-        
-        const h2 = createElement('h2');
-        h2.innerHTML = 'Select the Level of Difficulty';
-        root.appendChild(h2);
+        root.appendChild(this._createTitle());
 
         const ul = createElement('ul');
         levels.forEach(item => {
@@ -35,6 +32,12 @@ export default class LevelSelector {
 
         parent.appendChild(root);
         this.root = root;
+    }
+
+    _createTitle() {
+        const h2 = createElement('h2');
+        h2.innerHTML = 'Select the Level of Difficulty';
+        return h2;
     }
 
     _createRootAndSetElem() {
