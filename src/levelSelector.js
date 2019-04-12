@@ -60,13 +60,13 @@ export default class LevelSelector {
         button.innerHTML = 'OK';
         button.addEventListener('click', e => {
             e.stopPropagation();
-            if (!this.gameReady)
-                return;
-            const level = {
-                row: row.input.value,
-                col: col.input.value,
-            };
-            this.gameReady(level);
+            if (this.gameReady) {
+                const level = {
+                    row: row.input.value,
+                    col: col.input.value,
+                };
+                this.gameReady(level);
+            }
         }, false);
         confirm.appendChild(button);
         root.appendChild(row.li);
