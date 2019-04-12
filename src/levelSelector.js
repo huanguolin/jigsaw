@@ -4,10 +4,10 @@ export default class LevelSelector {
 
     constructor(parent, levels, levelMap, gameReady) {
         const div = createElement('div');
-        const h3 = createElement('h2');
+        const h2 = createElement('h2');
         const ul = createElement('ul');
         const customInput = this._genCustomInput();
-        h3.innerHTML = 'Select the Level of Difficulty';
+        h2.innerHTML = 'Select the Level of Difficulty';
         levels.forEach(item => {
             const li = createElement('li');
             li.innerHTML = item;
@@ -24,7 +24,7 @@ export default class LevelSelector {
         });
         div.classList.add('jigsaw-level-selector');
         div.style.display = 'none';
-        div.appendChild(h3);
+        div.appendChild(h2);
         div.appendChild(ul);
         div.appendChild(customInput);
         parent.appendChild(div);
