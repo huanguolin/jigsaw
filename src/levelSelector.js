@@ -6,16 +6,13 @@ export default class LevelSelector {
         this.gameReady = gameReady;        
         
         const root = this._createRootAndSetElem();
+        this.customInput = this._genCustomInput();
         root.appendChild(this._createTitle());
         root.appendChild(this._createLevelList(levels, levelMap));
-        
-
-        const customInput = this._genCustomInput();
-        root.appendChild(customInput);
-        this.customInput = customInput;
+        root.appendChild(this.customInput);
+        this.root = root;
 
         parent.appendChild(root);
-        this.root = root;
     }
 
     _createLevelList(levels, levelMap) {
