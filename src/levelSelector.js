@@ -53,24 +53,8 @@ export default class LevelSelector {
     _genCustomInput() {
         const root = createElement('ul');
         root.classList.add('custom-input');
-        const genInputItem = function (name) {
-            const li = createElement('li');
-            const span = createElement('span');
-            span.innerHTML = name;
-            li.appendChild(span);
-            const input = createElement('input');
-            input.setAttribute('type', 'number');
-            input.setAttribute('min', 2);
-            input.setAttribute('max', 10);
-            input.setAttribute('value', 4);
-            li.appendChild(input);
-            return {
-                li: li,
-                input: input
-            };
-        };
-        const row = genInputItem('Row');
-        const col = genInputItem('Column');
+        const row = this._genInputItem('Row');
+        const col = this._genInputItem('Column');
         const confirm = createElement('li');
         const button = createElement('button');
         button.innerHTML = 'OK';
@@ -89,5 +73,22 @@ export default class LevelSelector {
         root.appendChild(col.li);
         root.appendChild(confirm);
         return root;
+    }
+    
+    _genInputItem(name) {
+        const li = createElement('li');
+        const span = createElement('span');
+        span.innerHTML = name;
+        li.appendChild(span);
+        const input = createElement('input');
+        input.setAttribute('type', 'number');
+        input.setAttribute('min', 2);
+        input.setAttribute('max', 10);
+        input.setAttribute('value', 4);
+        li.appendChild(input);
+        return {
+            li: li,
+            input: input
+        };
     }
 }
