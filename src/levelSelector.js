@@ -2,18 +2,7 @@ import { createElement } from './util';
 
 export default class LevelSelector {
 
-    constructor() {
-    }
-
-    get show() {
-        return this.root.style.display !== 'none';
-    }
-
-    set show(val) {
-        this.root.style.display = val ? 'block' : 'none';
-    }
-
-    init(parent, levels, levelMap, gameReady) {
+    constructor(parent, levels, levelMap, gameReady) {
         var self = this;
         var div = createElement('div');
         var h3 = createElement('h2');
@@ -43,6 +32,14 @@ export default class LevelSelector {
         self.customInput = customInput;
         self.gameReady = gameReady;
         self.root = div;
+    }
+
+    get show() {
+        return this.root.style.display !== 'none';
+    }
+
+    set show(val) {
+        this.root.style.display = val ? 'block' : 'none';
     }
 
     open() {

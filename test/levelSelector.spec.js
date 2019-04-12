@@ -1,7 +1,5 @@
 import LevelSelector from '../src/levelSelector';
 
-const levelSelector = new LevelSelector();
-
 describe('levelSelector', () => {
     var levels = ['simple', 'hard', 'custom'];
     var levelMap = {
@@ -14,11 +12,12 @@ describe('levelSelector', () => {
             col: 10,
         },
     };
+    let levelSelector;
     beforeEach(() => (document.body.innerHTML = `<div id="test"></div>`));
 
     describe('DOM structure', () => {
         beforeEach(() => {
-            levelSelector.init(
+          levelSelector = new LevelSelector(
                 document.getElementById('test'),
                 levels,
                 levelMap
@@ -262,7 +261,7 @@ describe('levelSelector', () => {
         let mockCb;
         beforeEach(() => {
             mockCb = jest.fn();
-            levelSelector.init(
+            levelSelector = new LevelSelector(
                 document.getElementById('test'),
                 levels,
                 levelMap,
