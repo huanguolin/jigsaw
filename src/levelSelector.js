@@ -3,13 +3,13 @@ import { createElement } from './util';
 export default class LevelSelector {
 
     constructor(parent, levels, levelMap, gameReady) {
-        var div = createElement('div');
-        var h3 = createElement('h2');
-        var ul = createElement('ul');
-        var customInput = this._genCustomInput();
+        const div = createElement('div');
+        const h3 = createElement('h2');
+        const ul = createElement('ul');
+        const customInput = this._genCustomInput();
         h3.innerHTML = 'Select the Level of Difficulty';
         levels.forEach(item => {
-            var li = createElement('li');
+            const li = createElement('li');
             li.innerHTML = item;
             li.addEventListener('click', e => {
                 e.stopPropagation();
@@ -51,15 +51,15 @@ export default class LevelSelector {
     }
 
     _genCustomInput() {
-        var self = this;
-        var root = createElement('ul');
+        const self = this;
+        const root = createElement('ul');
         root.classList.add('custom-input');
-        var genInputItem = function (name) {
-            var li = createElement('li');
-            var span = createElement('span');
+        const genInputItem = function (name) {
+            const li = createElement('li');
+            const span = createElement('span');
             span.innerHTML = name;
             li.appendChild(span);
-            var input = createElement('input');
+            const input = createElement('input');
             input.setAttribute('type', 'number');
             input.setAttribute('min', 2);
             input.setAttribute('max', 10);
@@ -70,16 +70,16 @@ export default class LevelSelector {
                 input: input
             };
         };
-        var row = genInputItem('Row');
-        var col = genInputItem('Column');
-        var confirm = createElement('li');
-        var button = createElement('button');
+        const row = genInputItem('Row');
+        const col = genInputItem('Column');
+        const confirm = createElement('li');
+        const button = createElement('button');
         button.innerHTML = 'OK';
         button.addEventListener('click', function (e) {
             e.stopPropagation();
             if (!self.gameReady)
                 return;
-            var level = {
+            const level = {
                 row: row.input.value,
                 col: col.input.value,
             };
