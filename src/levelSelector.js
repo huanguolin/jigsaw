@@ -1,7 +1,9 @@
 import { createElement } from './util';
 
-class LevelSelector {
+export default class LevelSelector {
 
+    constructor() {
+    }
 
     get show() {
         return this.root.style.display !== 'none';
@@ -94,5 +96,3 @@ class LevelSelector {
         return root;
     }
 }
-
-export default new LevelSelector();

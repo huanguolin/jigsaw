@@ -1,5 +1,6 @@
-import levelSelector from '../src/levelSelector';
-import * as testUtil from '../testUtil';
+import LevelSelector from '../src/levelSelector';
+
+const levelSelector = new LevelSelector();
 
 describe('levelSelector', () => {
     var levels = ['simple', 'hard', 'custom'];

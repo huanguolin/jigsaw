@@ -6,8 +6,8 @@
  */
 
 import ImgSelector from './ImgSelector';
+import LevelSelector from './levelSelector';
 
-import levelSelector from './levelSelector';
 import gamePanel from './gamePanel';
 import gamePlayground from './gamePlayground';
 
@@ -44,6 +44,7 @@ export default function jigsaw(el, width, height) {
         levelSelector.open();
         imgUrl = imgSrc;
     });
+    const levelSelector = new LevelSelector();
     levelSelector.init(el, levels, levelMap, function (level) {
         levelSelector.close();
         gamePlayground.serve(imgUrl, level);
