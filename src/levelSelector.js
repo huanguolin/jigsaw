@@ -43,8 +43,12 @@ export default class LevelSelector {
 
     _notifySelectedLevel(item) {
         if (this.gameReady) {
-            this.gameReady(this.levelMap[item]);
+            this.gameReady(this._getLevel(item));
         }
+    }
+
+    _getLevel(item) {        
+        return this.levelMap[item];
     }
 
     _createTitle() {
