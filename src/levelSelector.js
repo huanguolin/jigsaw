@@ -3,16 +3,18 @@ import { createElement } from './util';
 export default class LevelSelector {
 
     constructor(parent, levels, levelMap, gameReady) {
-        this.gameReady = gameReady;        
-        
+        this.gameReady = gameReady;
+        this.root = this._createAndSetRootElem(levels, levelMap);
+        parent.appendChild(this.root);
+    }
+
+    _createAndSetRootElem(levels, levelMap) {
         const root = this._createRootAndSetElem();
         this.customInput = this._genCustomInput();
         root.appendChild(this._createTitle());
         root.appendChild(this._createLevelList(levels, levelMap));
         root.appendChild(this.customInput);
-        this.root = root;
-
-        parent.appendChild(root);
+        return root;
     }
 
     _createLevelList(levels, levelMap) {
