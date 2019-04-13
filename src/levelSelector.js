@@ -34,13 +34,17 @@ export default class LevelSelector {
             e.stopPropagation();
             if (item === 'custom') {
                 this._showCustomInput();
-                return;
-            }
-            if (this.gameReady) {
-                this.gameReady(this.levelMap[item]);
+            } else {
+                this._notifySelectedLevel(item);
             }
         }, false);
         return li;
+    }
+
+    _notifySelectedLevel(item) {
+        if (this.gameReady) {
+            this.gameReady(this.levelMap[item]);
+        }
     }
 
     _createTitle() {
