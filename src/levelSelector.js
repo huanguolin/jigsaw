@@ -16,9 +16,11 @@ export default class LevelSelector {
     }
 
     _createLevelList(levels, levelMap) {
-        const ul = createElement('ul');
-        levels.forEach(item => ul.appendChild(this._createLevelListItem(item, levelMap)));
-        return ul;
+        return levels.reduce((ul, level) => {
+            const listItem = this._createLevelListItem(level, levelMap);
+            ul.appendChild(listItem);
+            return ul;
+        }, createElement('ul'));
     }
 
     _createLevelListItem(item, levelMap) {
