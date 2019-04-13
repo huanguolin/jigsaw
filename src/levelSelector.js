@@ -12,7 +12,7 @@ export default class LevelSelector {
     }
 
     _createAndSetRootElem() {
-        const root = this._createRootAndSetElem();
+        const root = this._createRootElem();
         this.customInput = this._genCustomInput();
         root.appendChild(this._createTitle());
         root.appendChild(this._createLevelList());
@@ -33,7 +33,7 @@ export default class LevelSelector {
         li.addEventListener('click', e => {
             e.stopPropagation();
             if (item === 'custom') {
-                this.customInput.style.display = 'block';
+                this._showCustomInput();
                 return;
             }
             if (this.gameReady) {
@@ -49,7 +49,7 @@ export default class LevelSelector {
         return h2;
     }
 
-    _createRootAndSetElem() {
+    _createRootElem() {
         const root = createElement('div');
         root.classList.add('jigsaw-level-selector');
         root.style.display = 'none';
@@ -64,9 +64,17 @@ export default class LevelSelector {
         this.root.style.display = val ? 'block' : 'none';
     }
 
+    _showCustomInput() {
+        this.customInput.style.display = 'block';
+    }
+
+    _hideCustomInput() {
+        this.customInput.style.display = 'none';
+    }
+
     open() {
         this.show = true;
-        this.customInput.style.display = 'none';
+        this._hideCustomInput();
     }
 
     close() {
