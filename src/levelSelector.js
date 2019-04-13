@@ -17,22 +17,24 @@ export default class LevelSelector {
 
     _createLevelList(levels, levelMap) {
         const ul = createElement('ul');
-        levels.forEach(item => {
-            const li = createElement('li');
-            li.innerHTML = item;
-            li.addEventListener('click', e => {
-                e.stopPropagation();
-                if (item === 'custom') {
-                    this.customInput.style.display = 'block';
-                    return;
-                }
-                if (this.gameReady) {
-                    this.gameReady(levelMap[item]);
-                }
-            }, false);
-            ul.appendChild(li);
-        });
+        levels.forEach(item => ul.appendChild(this._createLevelListItem(item, levelMap)));
         return ul;
+    }
+
+    _createLevelListItem(item, levelMap) {
+        const li = createElement('li');
+        li.innerHTML = item;
+        li.addEventListener('click', e => {
+            e.stopPropagation();
+            if (item === 'custom') {
+                this.customInput.style.display = 'block';
+                return;
+            }
+            if (this.gameReady) {
+                this.gameReady(levelMap[item]);
+            }
+        }, false);
+        return li;
     }
 
     _createTitle() {
