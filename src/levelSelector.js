@@ -15,14 +15,14 @@ export default class LevelSelector {
         const root = this._createRootAndSetElem();
         this.customInput = this._genCustomInput();
         root.appendChild(this._createTitle());
-        root.appendChild(this._createLevelList(this.levels, this.levelMap));
+        root.appendChild(this._createLevelList());
         root.appendChild(this.customInput);
         return root;
     }
 
-    _createLevelList(levels, levelMap) {
-        return levels.reduce((ul, level) => {
-            const listItem = this._createLevelListItem(level, levelMap);
+    _createLevelList() {
+        return this.levels.reduce((ul, level) => {
+            const listItem = this._createLevelListItem(level, this.levelMap);
             ul.appendChild(listItem);
             return ul;
         }, createElement('ul'));
