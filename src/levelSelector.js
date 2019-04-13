@@ -13,10 +13,10 @@ export default class LevelSelector {
 
     _createAndSetRootElem() {
         const root = this._createRootElem();
-        this.customInput = this._genCustomInput();
+        this._customInput = this._genCustomInput();
         root.appendChild(this._createTitle());
         root.appendChild(this._createLevelList());
-        root.appendChild(this.customInput);
+        root.appendChild(this._customInput);
         return root;
     }
 
@@ -65,11 +65,11 @@ export default class LevelSelector {
     }
 
     _showCustomInput() {
-        this.customInput.style.display = 'block';
+        this._customInput.style.display = 'block';
     }
 
     _hideCustomInput() {
-        this.customInput.style.display = 'none';
+        this._customInput.style.display = 'none';
     }
 
     open() {
