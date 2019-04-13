@@ -22,13 +22,12 @@ export default class LevelSelector {
 
     _createLevelList() {
         return this.levels.reduce((ul, level) => {
-            const listItem = this._createLevelListItem(level, this.levelMap);
-            ul.appendChild(listItem);
+            ul.appendChild(this._createLevelListItem(level));
             return ul;
         }, createElement('ul'));
     }
 
-    _createLevelListItem(item, levelMap) {
+    _createLevelListItem(item) {
         const li = createElement('li');
         li.innerHTML = item;
         li.addEventListener('click', e => {
@@ -38,7 +37,7 @@ export default class LevelSelector {
                 return;
             }
             if (this.gameReady) {
-                this.gameReady(levelMap[item]);
+                this.gameReady(this.levelMap[item]);
             }
         }, false);
         return li;
