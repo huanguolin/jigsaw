@@ -11,6 +11,23 @@ export default class LevelSelector {
         parent.appendChild(this.root);
     }
 
+    get show() {
+        return this.root.style.display !== 'none';
+    }
+
+    set show(val) {
+        this.root.style.display = val ? 'block' : 'none';
+    }
+
+    open() {
+        this.show = true;
+        this._hideCustomInput();
+    }
+
+    close() {
+        this.show = false;
+    }
+
     _createAndSetRootElem() {
         const root = this._createRootElem();
         this._customInput = this._genCustomInput();
@@ -64,14 +81,6 @@ export default class LevelSelector {
         return root;
     }
 
-    get show() {
-        return this.root.style.display !== 'none';
-    }
-
-    set show(val) {
-        this.root.style.display = val ? 'block' : 'none';
-    }
-
     _showCustomInput() {
         this._customInput.style.display = 'block';
     }
@@ -80,54 +89,59 @@ export default class LevelSelector {
         this._customInput.style.display = 'none';
     }
 
-    open() {
-        this.show = true;
-        this._hideCustomInput();
-    }
-
-    close() {
-        this.show = false;
-    }
-
     _genCustomInput() {
-        const root = createElement('ul');
-        root.classList.add('custom-input');
+        const ul = createElement('ul');
+        ul.classList.add('custom-input');
         const row = this._genInputItem('Row');
         const col = this._genInputItem('Column');
-        const confirm = createElement('li');
+        const confirm = this._genConfirm(row.input, col.input);
+        ul.appendChild(row.li);
+        ul.appendChild(col.li);
+        ul.appendChild(confirm);
+        return ul;
+    }
+    
+    _genConfirm(rowInput, colInput) {
         const button = createElement('button');
         button.innerHTML = 'OK';
         button.addEventListener('click', e => {
             e.stopPropagation();
             if (this.gameReady) {
-                const level = {
-                    row: row.input.value,
-                    col: col.input.value,
-                };
-                this.gameReady(level);
+                this.gameReady({
+                    row: rowInput.value,
+                    col: colInput.value,
+                });
             }
         }, false);
+        const confirm = createElement('li');
         confirm.appendChild(button);
-        root.appendChild(row.li);
-        root.appendChild(col.li);
-        root.appendChild(confirm);
-        return root;
+        return confirm;
     }
-    
+
     _genInputItem(name) {
+        const span = this._createInputLabelElem(name);
+        const input = this._createInputElem();
         const li = createElement('li');
+        li.appendChild(span);
+        li.appendChild(input);
+        return {
+            li,
+            input,
+        };
+    }
+
+    _createInputLabelElem(name) {
         const span = createElement('span');
         span.innerHTML = name;
-        li.appendChild(span);
+        return span;
+    }
+
+    _createInputElem() {
         const input = createElement('input');
         input.setAttribute('type', 'number');
         input.setAttribute('min', 2);
         input.setAttribute('max', 10);
         input.setAttribute('value', 4);
-        li.appendChild(input);
-        return {
-            li: li,
-            input: input
-        };
+        return input;
     }
 }
